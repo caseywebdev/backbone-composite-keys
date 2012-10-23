@@ -1,0 +1,28 @@
+{
+  "name": "backbone-composite-keys",
+  "version": "0.0.1",
+  "author": "Casey Foster <casey@caseywebdev.com>",
+  "licence": "MIT",
+  "main": "dist/backbone-composite-keys",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caseywebdev/backbone-composite-keys"
+  },
+  "dependencies": {
+    "underscore": "x"
+  },
+  "devDependencies": {
+    "coffee-script": "x",
+    "mocha": "x",
+    "chai": "x",
+    "backbone": "git://github.com/documentcloud/backbone"
+  },
+  "engines": {
+    "node": "x",
+    "npm": "x"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha",
+    "dev": "node_modules/.bin/coffee -cw -o dist lib"
+  }
+}
