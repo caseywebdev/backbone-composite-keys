@@ -1,13 +1,13 @@
-backbone-relations [![Build Status](https://secure.travis-ci.org/caseywebdev/backbone-relations.png)](http://travis-ci.org/caseywebdev/backbone-relations)
+backbone-composite-keys [![Build Status](https://secure.travis-ci.org/caseywebdev/backbone-composite-keys.png)](http://travis-ci.org/caseywebdev/backbone-composite-keys)
 =============
 
-Backbone one-to-one, one-to-many, and many-to-many relationships for the browser and nodejs.
+Composite key support for Backbone. Just set your `idAttribute` to an array of attributes and you're all set.
 
 Install
 -------
 
 ```bash
-npm install backbone-relations
+npm install backbone-composite-keys
 ```
 
 Use
@@ -17,7 +17,7 @@ This plugin extends the Backbone core, so you'll need to pass in your instance o
 
 ```coffee
 Backbone = require 'backbone'
-require('backbone-relations') Backbone
+require('backbone-composite-keys') Backbone
 ```
 
 This is done automatically in the browser.

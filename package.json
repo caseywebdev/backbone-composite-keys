@@ -22,7 +22,7 @@
     "npm": "x"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha",
-    "dev": "node_modules/.bin/coffee -cw -o dist lib"
+    "test": "`npm bin`/mocha",
+    "dev": "`npm bin`/coffee -cw -o dist lib"
   }
 }
