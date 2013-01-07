@@ -36,7 +36,7 @@ _ = @_ or require 'underscore'
   _.extend Backbone.Collection::,
     get: (obj) ->
       return undefined unless obj?
-      @_idAttr or= @model::prototype.idAttribute
+      @_idAttr or= @model::idAttribute
       return this._byId[obj.id || obj.cid || generateId(@_idAttr, obj) || obj]
 
     _onModelEvent: (event, model, collection, options) ->

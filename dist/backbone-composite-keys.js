@@ -5,27 +5,29 @@
   _ = this._ || require('underscore');
 
   (typeof module !== "undefined" && module !== null ? module : {}).exports = bind = function(Backbone) {
-    var set, _onModelEvent;
+    var generateId, set, _onModelEvent;
     set = Backbone.Model.prototype.set;
+    generateId = function(idAttr, attrs) {
+      var index, indexes, val, _i, _len;
+      if (typeof idAttr === 'string') {
+        return attrs[idAttr];
+      }
+      indexes = [];
+      for (_i = 0, _len = idAttr.length; _i < _len; _i++) {
+        index = idAttr[_i];
+        if (!(val = attrs[index])) {
+          return void 0;
+        }
+        indexes.push(val);
+      }
+      return indexes.join('-');
+    };
     _.extend(Backbone.Model.prototype, {
       _generateId: function(attrs) {
-        var index, indexes, val, _i, _len, _ref;
         if (attrs == null) {
           attrs = this.attributes;
         }
-        if (typeof this.idAttribute === 'string') {
-          return attrs[this.idAttribute];
-        }
-        indexes = [];
-        _ref = this.idAttribute;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          index = _ref[_i];
-          if (!(val = attrs[index])) {
-            return void 0;
-          }
-          indexes.push(val);
-        }
-        return indexes.join('-');
+        return generateId(this.idAttribute, attrs);
       },
       set: function(key, val, options) {
         var attrs;
@@ -53,7 +55,7 @@
           return void 0;
         }
         this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
-        return this._byId[obj.id || obj.cid || this.model.prototype._generateId(obj) || obj];
+        return this._byId[obj.id || obj.cid || generateId(this._idAttr, obj) || obj];
       },
       _onModelEvent: function(event, model, collection, options) {
         if (model && event === 'change' && model.id !== model._previousId) {
