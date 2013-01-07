@@ -5,16 +5,18 @@ _ = @_ or require 'underscore'
   # Save the original `set`
   set = Backbone.Model::set
 
+  generateId = (idAttr, attrs) ->
+    return attrs[idAttr] if typeof idAttr is 'string'
+    indexes = []
+    for index in idAttr
+      return undefined unless val = attrs[index]
+      indexes.push val
+    indexes.join '-'
+
   _.extend Backbone.Model::,
 
     # Generate an id base on `idAttribute`
-    _generateId: (attrs = @attributes) ->
-      return attrs[@idAttribute] if typeof @idAttribute is 'string'
-      indexes = []
-      for index in @idAttribute
-        return undefined unless val = attrs[index]
-        indexes.push val
-      indexes.join '-'
+    _generateId: (attrs = @attributes) -> generateId @idAttribute, attrs
 
     set: (key, val, options) ->
       return @ unless key?
@@ -34,8 +36,8 @@ _ = @_ or require 'underscore'
   _.extend Backbone.Collection::,
     get: (obj) ->
       return undefined unless obj?
-      @_idAttr or= @model::idAttribute
-      return this._byId[obj.id || obj.cid || @model::_generateId(obj) || obj]
+      @_idAttr or= @model::prototype.idAttribute
+      return this._byId[obj.id || obj.cid || generateId(@_idAttr, obj) || obj]
 
     _onModelEvent: (event, model, collection, options) ->
       if model and event is 'change' and model.id isnt model._previousId
