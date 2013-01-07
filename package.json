@@ -1,6 +1,6 @@
 {
   "name": "backbone-composite-keys",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Casey Foster <casey@caseywebdev.com>",
   "licence": "MIT",
   "main": "dist/backbone-composite-keys",
@@ -22,7 +22,7 @@
     "npm": "x"
   },
   "scripts": {
-    "test": "`npm bin`/mocha",
-    "dev": "`npm bin`/coffee -cw -o dist lib"
+    "test": "node_modules/.bin/mocha",
+    "dev": "node_modules/.bin/coffee -cw -o dist lib"
   }
 }

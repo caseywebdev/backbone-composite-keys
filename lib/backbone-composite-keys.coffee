@@ -23,10 +23,7 @@ _ = @_ or require 'underscore'
         options = val
       else
         (attrs = {})[key] = val
-      unset = options?.unset
-      attrs = attrs.attributes if attrs instanceof Backbone.Model
-      attrs[attr] = undefined for attr of attrs if unset
-      return false unless @_validate attrs, options
+      return false unless @_validate attrs, options || {}
       @_previousId = @id
       @id = @_generateId _.extend {}, @attributes, attrs
       set.apply @, arguments
@@ -35,6 +32,11 @@ _ = @_ or require 'underscore'
   _onModelEvent = Backbone.Collection::_onModelEvent
 
   _.extend Backbone.Collection::,
+    get: (obj) ->
+      return undefined unless obj?
+      @_idAttr or= @model::idAttribute
+      return this._byId[obj.id || obj.cid || @model::_generateId(obj) || obj]
+
     _onModelEvent: (event, model, collection, options) ->
       if model and event is 'change' and model.id isnt model._previousId
         delete @_byId[model._previousId]

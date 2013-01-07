@@ -28,7 +28,7 @@
         return indexes.join('-');
       },
       set: function(key, val, options) {
-        var attr, attrs, unset;
+        var attrs;
         if (key == null) {
           return this;
         }
@@ -38,16 +38,7 @@
         } else {
           (attrs = {})[key] = val;
         }
-        unset = options != null ? options.unset : void 0;
-        if (attrs instanceof Backbone.Model) {
-          attrs = attrs.attributes;
-        }
-        if (unset) {
-          for (attr in attrs) {
-            attrs[attr] = void 0;
-          }
-        }
-        if (!this._validate(attrs, options)) {
+        if (!this._validate(attrs, options || {})) {
           return false;
         }
         this._previousId = this.id;
@@ -57,6 +48,13 @@
     });
     _onModelEvent = Backbone.Collection.prototype._onModelEvent;
     _.extend(Backbone.Collection.prototype, {
+      get: function(obj) {
+        if (obj == null) {
+          return void 0;
+        }
+        this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
+        return this._byId[obj.id || obj.cid || this.model.prototype._generateId(obj) || obj];
+      },
       _onModelEvent: function(event, model, collection, options) {
         if (model && event === 'change' && model.id !== model._previousId) {
           delete this._byId[model._previousId];
