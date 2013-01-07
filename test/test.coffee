@@ -5,6 +5,9 @@ require('../') Backbone
 class Model extends Backbone.Model
   idAttribute: ['a', 'b']
 
+class Collection extends Backbone.Collection
+  model: Model
+
 describe 'composite keys', ->
   it 'should be available in `initialize`', ->
     id = null
@@ -36,3 +39,6 @@ describe 'composite keys', ->
     c.length.should.equal 1
     c.models.should.include a
     c.models.should.not.include b
+
+  it 'should get unsaved models', ->
+    (new Collection(a = new Model)).get(a).should.equal a
