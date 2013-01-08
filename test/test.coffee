@@ -23,7 +23,7 @@ describe 'composite keys', ->
 
   it 'should update collection index when changed', ->
     a = new Model a: 1, b: 2
-    b = new Backbone.Collection
+    b = new Collection
     b.add a
     b.get('1-2').should.equal a
     a.set b: 1
@@ -33,7 +33,7 @@ describe 'composite keys', ->
   it 'should not repeat in collections', ->
     a = new Model a: 1, b: 2
     b = new Model a: 1, b: 2
-    c = new Backbone.Collection
+    c = new Collection
     c.add a
     c.add b
     c.length.should.equal 1
@@ -42,3 +42,10 @@ describe 'composite keys', ->
 
   it 'should get unsaved models', ->
     (new Collection(a = new Model)).get(a).should.equal a
+
+  it 'should get saved models', ->
+    a = new Model a: 1, b: 1
+    (c = new Collection a).get('1-1').should.equal a
+    a.set b: 2
+    c.get('1-2').should.equal a
+    (c.get('1-1') is undefined).should.be.true

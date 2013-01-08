@@ -9,9 +9,13 @@ _ = @_ or require 'underscore'
     return attrs[idAttr] if typeof idAttr is 'string'
     indexes = []
     for index in idAttr
-      return undefined unless val = attrs[index]
+      return undefined unless (val = attrs[index])?
       indexes.push val
     indexes.join '-'
+
+  idChangeEvents = (idAttr) ->
+    return ["change:#{idAttr}"] if typeof idAttr is 'string'
+    _.map idAttr, (index) -> "change:#{index}"
 
   _.extend Backbone.Model::,
 
@@ -26,7 +30,6 @@ _ = @_ or require 'underscore'
       else
         (attrs = {})[key] = val
       return false unless @_validate attrs, options || {}
-      @_previousId = @id
       @id = @_generateId _.extend {}, @attributes, attrs
       set.apply @, arguments
 
@@ -40,9 +43,11 @@ _ = @_ or require 'underscore'
       return this._byId[obj.id || obj.cid || generateId(@_idAttr, obj) || obj]
 
     _onModelEvent: (event, model, collection, options) ->
-      if model and event is 'change' and model.id isnt model._previousId
-        delete @_byId[model._previousId]
-        @_byId[model.id] = model if model.id?
+      if event in idChangeEvents (@_idAttr or= @model::idAttribute)
+        prev = generateId @_idAttr, model.previousAttributes()
+        if prev isnt model.id
+          delete @_byId[prev]
+          @_byId[model.id] = model if model.id?
       _onModelEvent.apply @, arguments
 
   Backbone
