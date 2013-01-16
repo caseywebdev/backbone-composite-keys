@@ -37,10 +37,11 @@ _ = @_ or require 'underscore'
   _onModelEvent = Backbone.Collection::_onModelEvent
 
   _.extend Backbone.Collection::,
-    get: (obj) ->
-      return undefined unless obj?
+    get: (id) ->
+      return undefined unless id?
       @_idAttr or= @model::idAttribute
-      return this._byId[obj.id || obj.cid || generateId(@_idAttr, obj) || obj]
+      id = id.id || id.cid || generateId(@_idAttr, id) if _.isObject id
+      this._byId[id]
 
     _onModelEvent: (event, model, collection, options) ->
       if event in idChangeEvents (@_idAttr or= @model::idAttribute)

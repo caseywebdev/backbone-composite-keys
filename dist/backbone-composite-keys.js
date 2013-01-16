@@ -58,12 +58,15 @@
     });
     _onModelEvent = Backbone.Collection.prototype._onModelEvent;
     _.extend(Backbone.Collection.prototype, {
-      get: function(obj) {
-        if (obj == null) {
+      get: function(id) {
+        if (id == null) {
           return void 0;
         }
         this._idAttr || (this._idAttr = this.model.prototype.idAttribute);
-        return this._byId[obj.id || obj.cid || generateId(this._idAttr, obj) || obj];
+        if (_.isObject(id)) {
+          id = id.id || id.cid || generateId(this._idAttr, id);
+        }
+        return this._byId[id];
       },
       _onModelEvent: function(event, model, collection, options) {
         var prev;
