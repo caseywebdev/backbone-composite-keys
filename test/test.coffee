@@ -1,6 +1,6 @@
 should = require('chai').should()
 Backbone = require 'backbone'
-require('../') Backbone
+require '../'
 
 class Model extends Backbone.Model
   idAttribute: ['a', 'b']
